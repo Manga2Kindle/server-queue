@@ -14,4 +14,4 @@ If you really liked it and feel like I deserve some money, you can buy me a [cof
 ## Copyright
 Copyright &copy; 2019 Eduardo Fernandez.  
 
-**Manga2Kindle API** is released under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License; see _LICENSE_ for further details.
+**Manga2Kindle server-queue** is released under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License; see _LICENSE_ for further details.
