@@ -6,6 +6,7 @@ import {config} from "dotenv";
 import {resolve} from "path";
 import {Worker} from "../models/Worker";
 import {BadRequest} from "@tsed/exceptions";
+import {registerWorker} from "../modules/workerApiService";
 
 @Controller("/worker")
 export class WorkerController {
@@ -13,19 +14,23 @@ export class WorkerController {
   @Summary("Register a worker, called when a new worker comes online")
   @Returns(200)
   @Returns(400)
-  register(
+  async register(
     @BodyParams("worker")
     worker: string
-  ): void {
+  ): Promise<void> {
     if (worker == undefined || !this.validURL(worker)) {
       throw new BadRequest("Whatever 'worker' is, is not an URL right now");
     }
 
     // reload .env and add/remove workers
+    const workerURLS = process.env.WORKERS!.split(" ");
+    const workers: Worker[] = [];
     config({path: resolve(__dirname, "../.env")});
-    Workers.Instance.addAll(process.env.WORKERS!.split(" "));
 
-    // TODO check worker statuses
+    for (let i = 0; i < workerURLS.length; i++) {
+      workers.push(await registerWorker(new Worker(workerURLS[i])));
+    }
+    Workers.Instance.addAll(workerURLS);
   }
 
   @Post("/done")
