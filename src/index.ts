@@ -8,6 +8,7 @@ import Queue from "./modules/queue";
 import Workers from "./modules/workers";
 import {Server} from "./Server";
 import {Worker} from "./models/Worker";
+import {registerWorker} from "./modules/workerApiService";
 
 async function bootstrap() {
   try {
@@ -19,7 +20,8 @@ async function bootstrap() {
     const workers = Workers.Instance;
     const workerURLS = process.env.WORKERS!.split(" ");
     for (let i = 0; i < workerURLS.length; i++) {
-      workers.add(new Worker(workerURLS[i]));
+      const worker = new Worker(workerURLS[i]);
+      workers.add(await registerWorker(worker));
     }
 
     await platform.listen();

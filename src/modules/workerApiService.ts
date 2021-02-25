@@ -1,6 +1,33 @@
 import axios from "axios";
-import qs from "qs";
-import { Worker } from "../models/Worker";
+import {Worker} from "../models/Worker";
+
+export async function registerWorker(worker: Worker): Promise<Worker> {
+  const axiosInstance = axios.create({
+    baseURL: worker.path,
+    timeout: 1000
+  });
+
+  try {
+    const res = await axiosInstance.get("/register");
+
+    if (res.status != 200) {
+      worker.free = false;
+      return worker;
+    }
+  
+    if (res.data.worker != worker.path) {
+      worker.free = false;
+      return worker;
+    } else {
+      worker.free = res.data.free;
+      return worker;
+    }
+  
+  } catch (error) {
+    worker.free = false;
+    return worker;
+  }
+}
 
 export async function checkStatus(worker: Worker): Promise<Worker> {
   const axiosInstance = axios.create({
@@ -30,8 +57,7 @@ export async function convertChapter(worker: Worker, id: number): Promise<boolea
     timeout: 1000
   });
 
-  const res = await axiosInstance.put("/convert", qs.stringify({ 'id': id }));
-
+  const res = await axiosInstance.put("/" + id);
 
   return res.status == 200;
 }
