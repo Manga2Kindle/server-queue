@@ -26,14 +26,16 @@ export default class Workers {
 
   /**
    * Will add new workers and remove the ones with are no longer in the array
-   * 
+   *
    * @param workerPaths an array of strings with the paths of the workers
    */
   addAll(workerPaths: string[]) {
-    let newWorkerList: Worker[] = [];
+    const newWorkerList: Worker[] = [];
 
     for (let i = 0; i < workerPaths.length; i++) {
-      let wk = this.workers.find(e => { return e.path === workerPaths[i] });
+      const wk = this.workers.find((e) => {
+        return e.path === workerPaths[i];
+      });
 
       if (wk !== undefined) {
         newWorkerList.push(wk);
@@ -84,13 +86,13 @@ export default class Workers {
   }
 
   /**
-   * 
+   *
    * @param worker the worker to update
    * @param status if not set will be used the worker internal one
    */
   public setStatus(worker: Worker, status: boolean | undefined): void;
   /**
-   * 
+   *
    * @param workerPath the worker to update
    * @param status the status to update the worker
    */
@@ -102,14 +104,14 @@ export default class Workers {
     } else {
       wk = new Worker(wk);
     }
-    
+
     // put the status
     if (status !== undefined) {
       wk.free = status;
     }
 
     // rewrite the worker in the list
-    const wkIndex = this.workers.findIndex(e => e.path == wk.path); // dumbass linter thats a Worker no mather what, it cant be a string
+    const wkIndex = this.workers.findIndex((e) => e.path == wk.path); // dumbass linter thats a Worker no mather what, it cant be a string
     this.workers[wkIndex] = wk;
   }
 }
