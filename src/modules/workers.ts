@@ -111,7 +111,7 @@ export default class Workers {
     }
 
     // rewrite the worker in the list
-    const wkIndex = this.workers.findIndex((e) => e.path == wk.path); // dumbass linter thats a Worker no mather what, it cant be a string
+    const wkIndex = this.workers.findIndex((e) => e.path == (wk as Worker).path); // dumbass linter thats a Worker no mather what, it cant be a string
     this.workers[wkIndex] = wk;
   }
 }
