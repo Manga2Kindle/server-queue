@@ -40,7 +40,7 @@ export class WorkerController {
     worker: string
   ) {
     // TODO we need something to know what worker was it and put it to true again
-    Workers.Instance.setStatus(new Worker("a"), true); // need to be edited
+    Workers.Instance.setStatus(new Worker(worker), true); // need to be edited
     // TODO if we dont know what worker was just ask all
   }
 
