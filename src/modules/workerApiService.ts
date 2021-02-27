@@ -14,7 +14,7 @@ export async function registerWorker(worker: Worker): Promise<Worker> {
       worker.free = false;
       return worker;
     }
-  
+
     if (res.data.worker != worker.path) {
       worker.free = false;
       return worker;
@@ -22,7 +22,6 @@ export async function registerWorker(worker: Worker): Promise<Worker> {
       worker.free = res.data.free;
       return worker;
     }
-  
   } catch (error) {
     worker.free = false;
     return worker;
