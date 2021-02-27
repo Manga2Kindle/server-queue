@@ -7,7 +7,7 @@ import Workers from "../modules/workers";
 export class StatsController {
   @Get("/")
   @Summary("Returns some stats")
-  getStats(): Object {
+  getStats(): unknown {
     return {
       Jobs: {
         Enqueued: Queue.Instance.length(),
