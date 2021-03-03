@@ -17,6 +17,13 @@ export default class Queue {
     this.queue.push(n);
   }
 
+  public remove(n: number) {
+    const index = this.queue.indexOf(n);
+    if (index > -1) {
+      this.queue.splice(index, 1);
+    }
+  }
+
   public shift(): number | undefined {
     this.jobs++;
     return this.queue.shift();

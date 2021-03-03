@@ -28,5 +28,7 @@ export class QueueController {
   delete(
     @PathParams("id")
     id: number
-  ) {}
+  ) {
+    Queue.Instance.remove(id);
+  }
 }
