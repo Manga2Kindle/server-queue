@@ -48,19 +48,17 @@ export default class Workers {
   }
 
   /**
-   * @returns next available worker
+   * @returns next available worker or void if none available
    */
-  public get(): Worker {
-    if (this.workerIterator > this.workers.length) {
-      this.workerIterator = 0;
-    }
-
+  public get(): Worker | void {
     for (let i = 0; i < this.workers.length; i++) {
-      const element = this.workers[i];
-      // TODO: we need to retrieve the next one available BUT we need to run over all the workers only once (or we will block the execution until one is available)
-    }
+      const index = (((this.workerIterator + i) % this.workers.length) + this.workers.length) % this.workers.length;
 
-    return this.workers[this.workerIterator++];
+      if (this.workers[index].free) {
+        this.workerIterator = index;
+        return this.workers[index];
+      }
+    }
   }
 
   /**

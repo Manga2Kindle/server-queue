@@ -1,5 +1,6 @@
 import {Controller, Delete, Get, PathParams, Put} from "@tsed/common";
 import {Summary} from "@tsed/schema";
+import { Worker } from "../models/Worker";
 import Queue from "../modules/queue";
 import {convertChapter} from "../modules/workerApiService";
 import Workers from "../modules/workers";
@@ -15,7 +16,10 @@ export class QueueController {
     Queue.Instance.push(id);
 
     if (Workers.Instance.workersAvailable() > 0 || Queue.Instance.length() > 0) {
-      convertChapter(Workers.Instance.get(), Queue.Instance.shift()!);
+      const worker = Workers.Instance.get();
+      if (worker instanceof Worker) {
+        convertChapter(worker, Queue.Instance.shift()!);
+      }
     }
   }
 
