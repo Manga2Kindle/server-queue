@@ -1,4 +1,4 @@
-import {BodyParams, Controller, Get, Post} from "@tsed/common";
+import {$log, BodyParams, Controller, Get, Post} from "@tsed/common";
 import {Returns, Summary} from "@tsed/schema";
 import Queue from "../modules/queue";
 import Workers from "../modules/workers";
@@ -39,9 +39,10 @@ export class WorkerController {
     @BodyParams("worker")
     worker: string
   ) {
-    // TODO we need something to know what worker was it and put it to true again
-    Workers.Instance.setStatus(new Worker(worker), true); // need to be edited
-    // TODO if we dont know what worker was just ask all
+    if (!Workers.Instance.setStatus(new Worker(worker), true)) {
+      // worker unknown
+      $log.warn("Worker unknown: " + worker);
+    }
   }
 
   private validURL(str: string) {

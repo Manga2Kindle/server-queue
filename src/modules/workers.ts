@@ -88,14 +88,14 @@ export default class Workers {
    * @param worker the worker to update
    * @param status if not set will be used the worker internal one
    */
-  public setStatus(worker: Worker, status: boolean | undefined): void;
+  public setStatus(worker: Worker, status: boolean | undefined): boolean;
   /**
    *
    * @param workerPath the worker to update
    * @param status the status to update the worker
    */
-  public setStatus(workerPath: string, status: boolean): void;
-  setStatus(wk: string | Worker, status: boolean | undefined): void {
+  public setStatus(workerPath: string, status: boolean): boolean;
+  setStatus(wk: string | Worker, status: boolean | undefined): boolean {
     // if it is a Worker
     if (wk instanceof Worker) {
       // what.
@@ -110,6 +110,11 @@ export default class Workers {
 
     // rewrite the worker in the list
     const wkIndex = this.workers.findIndex((e) => e.path == (wk as Worker).path); // dumbass linter thats a Worker no mather what, it cant be a string
-    this.workers[wkIndex] = wk;
+    if (wkIndex > -1) {
+      this.workers[wkIndex] = wk;
+      return true;
+    } else {
+      return false;
+    }
   }
 }
