@@ -6,7 +6,7 @@ import {config} from "dotenv";
 import {resolve} from "path";
 import {Worker} from "../models/Worker";
 import {BadRequest} from "@tsed/exceptions";
-import {registerWorker} from "../modules/workerApiService";
+import {convertChapter, registerWorker} from "../modules/workerApiService";
 
 @Controller("/worker")
 export class WorkerController {
@@ -31,6 +31,14 @@ export class WorkerController {
       workers.push(await registerWorker(new Worker(workerURLS[i])));
     }
     Workers.Instance.addAll(workerURLS);
+
+    const wk = Workers.Instance.get();
+    if (wk instanceof Worker) {
+      const chapter = Queue.Instance.shift();
+      if (chapter != undefined) {
+        convertChapter(wk, chapter);
+      }
+    }
   }
 
   @Post("/done")
@@ -42,6 +50,14 @@ export class WorkerController {
     if (!Workers.Instance.setStatus(new Worker(worker), true)) {
       // worker unknown
       $log.warn("Worker unknown: " + worker);
+    }
+
+    const wk = Workers.Instance.get();
+    if (wk instanceof Worker) {
+      const chapter = Queue.Instance.shift();
+      if (chapter != undefined) {
+        convertChapter(wk, chapter);
+      }
     }
   }
 
