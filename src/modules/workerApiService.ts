@@ -1,3 +1,4 @@
+import { $log } from "@tsed/common";
 import axios from "axios";
 import {Worker} from "../models/Worker";
 
@@ -8,6 +9,7 @@ export async function registerWorker(worker: Worker): Promise<Worker> {
   });
 
   try {
+    $log.debug("registerWorker:" + worker.path);
     const res = await axiosInstance.get("/register");
 
     if (res.status != 200) {
@@ -34,6 +36,7 @@ export async function checkStatus(worker: Worker): Promise<Worker> {
     timeout: 1000
   });
 
+  $log.debug("checkStatus:" + worker.path);
   const res = await axiosInstance.get("/status");
 
   if (res.status != 200) {
@@ -56,6 +59,7 @@ export async function convertChapter(worker: Worker, id: number): Promise<boolea
     timeout: 1000
   });
 
+  $log.debug("convertChapter:" + worker.path + " (" + id + ")");
   const res = await axiosInstance.put("/" + id);
 
   return res.status == 200;
