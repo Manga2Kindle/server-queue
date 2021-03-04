@@ -18,7 +18,9 @@ export class QueueController {
     if (Workers.Instance.workersAvailable() > 0 || Queue.Instance.length() > 0) {
       const worker = Workers.Instance.get();
       if (worker instanceof Worker) {
-        convertChapter(worker, Queue.Instance.shift()!);
+        if(convertChapter(worker, Queue.Instance.shift()!)) {
+          Workers.Instance.setStatus(worker, false);
+        }
       }
     }
   }

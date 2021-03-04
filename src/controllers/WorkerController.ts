@@ -36,7 +36,9 @@ export class WorkerController {
     if (wk instanceof Worker) {
       const chapter = Queue.Instance.shift();
       if (chapter != undefined) {
-        convertChapter(wk, chapter);
+        if(convertChapter(wk, chapter)) {
+          Workers.Instance.setStatus(wk, false);
+        }
       }
     }
   }
@@ -56,7 +58,9 @@ export class WorkerController {
     if (wk instanceof Worker) {
       const chapter = Queue.Instance.shift();
       if (chapter != undefined) {
-        convertChapter(wk, chapter);
+        if(convertChapter(wk, chapter)) {
+          Workers.Instance.setStatus(wk, false);
+        }
       }
     }
   }
